@@ -6,8 +6,7 @@ import org.poo.ExchangeRate;
 import org.poo.User;
 import org.poo.transactions.Command;
 
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.*;
 
 public final class Admin {
     private static Admin instance = null;
@@ -192,34 +191,43 @@ public final class Admin {
         return null;
     }
 
+    public void addInverseRates() {
+        int size = exchangeRates.size();
+
+        for (int i = 0; i < size; i++) {
+            ExchangeRate original = exchangeRates.get(i);
+
+            // Creăm rata inversă
+            ExchangeRate inverse = new ExchangeRate(original.getTo(), original.getFrom(), 1 / original.getRate());
+
+            System.out.println("Adaug rata inversa: " + inverse.getFrom() + " " + inverse.getTo() + " " + inverse.getRate());
+
+            // Adăugăm rata inversă în listă
+            exchangeRates.add(inverse);
+        }
+    }
+
     public double getExchangeRateFromTo(String from, String to) {
-        // cuat rata directa
+        // Caut rata directă
         for (ExchangeRate exchangeRate : exchangeRates) {
             if (exchangeRate.getFrom().equals(from) && exchangeRate.getTo().equals(to)) {
-                return exchangeRate.getRate();
+                System.out.println("Rata directa: " + exchangeRate.getFrom() + " " + exchangeRate.getTo() + " " + exchangeRate.getRate());
+                return exchangeRate.getRate(); // Rată directă găsită
             }
         }
 
-        // caut rata inversa
-        for (ExchangeRate exchangeRate : exchangeRates) {
-            if (exchangeRate.getFrom().equals(to) && exchangeRate.getTo().equals(from)) {
-                return 1 / exchangeRate.getRate();
-            }
-        }
-
-        // caut succesiv, daca sunt din una in alta
+        // Caut rate intermediare recursiv
         for (ExchangeRate exchangeRate : exchangeRates) {
             if (exchangeRate.getFrom().equals(from)) {
                 double intermediateRate = getExchangeRateFromTo(exchangeRate.getTo(), to);
-                if (intermediateRate != 0) {
-                    System.out.println("*******IN ADMIN Am găsit rata de schimb de la " + from + " la " + to + " prin " + exchangeRate.getTo());
-                    return exchangeRate.getRate() * intermediateRate;
+                if (intermediateRate > 0) { // Dacă există o cale validă
+                    System.out.println("Rata intermediara: " + exchangeRate.getFrom() + " " + exchangeRate.getTo() + " " + exchangeRate.getRate());
+                    return exchangeRate.getRate() * intermediateRate; // Înmulțim ratele
                 }
             }
         }
 
-        // daca nu gasesc rata
-        return 0;
+        return 0; // Dacă nu există cale
     }
 
     public boolean isDirectRate(String from, String to) {
@@ -234,8 +242,25 @@ public final class Admin {
     public Account getAccountByAlias(String alias) {
         for (User user : users) {
             for (Account account : user.getAccounts()) {
+                // prima data verific sa nu fie null
+                if (account.getAlias() == null) {
+                    continue;
+                }
                 if (account.getAlias().equals(alias)) {
                     return account;
+                }
+            }
+        }
+        return null;
+    }
+
+    public Account getAccountOnlyByCardNumber(String iban) {
+        for (User user : users) {
+            for (Account account : user.getAccounts()) {
+                for (Card card : account.getCards()) {
+                    if (card.getCardNumber().equals(iban)) {
+                        return account;
+                    }
                 }
             }
         }

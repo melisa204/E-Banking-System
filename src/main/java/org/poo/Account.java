@@ -1,9 +1,11 @@
 package org.poo;
 
+import org.poo.fileio.output.SplitPaymentOutput;
 import org.poo.fileio.output.TransactionOutput;
 import org.poo.utils.Admin;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Account {
     public String getIban() {
@@ -115,21 +117,25 @@ public class Account {
         this.minBalance = minBalance;
     }
 
-    public boolean sendMoney(Account receiver, double amount, Admin admin) {
+    public boolean sendMoney(Account receiver, double amount, Admin admin, int timestamp) {
         // verific daca au aceeasi moneda
         if (this.getCurrency().equals(receiver.getCurrency())) {
             System.out.println("au aceeasi moneda deci doar transfer");
 
             if (this.getBalance() < amount) {
+                TransactionOutput transaction = new TransactionOutput(timestamp, "Insufficient funds");
+
+                // adaug tranzactia in lista de tranzactii a contului
+                this.addTransaction(transaction);
                 System.out.println("Insufficient funds");
                 return false;
             }
 
             // acum verific minimul de balanta
-            if (this.getBalance() - amount < this.getMinBalance()) {
-                System.out.println("nu ma lasa minuminul de balanta");
-                return false;
-            }
+//            if (this.getBalance() - amount < this.getMinBalance()) {
+//                System.out.println("nu ma lasa minuminul de balanta");
+//                return false;
+//            }
 
             // am verificat si totul e ok -> fac tfransferul
             System.out.println("transfer " + amount + " din contul care are " + this.getBalance() + " in contul care are " + receiver.getBalance());
@@ -160,8 +166,14 @@ public class Account {
 
 //        System.out.println("amount converted: " + amountConverted);
 
-        if (amountConverted > balance) { // TODO poate ar trb sa verific si minBalance
+        if (amount > balance) { // TODO poate ar trb sa verific si minBalance
             System.out.println("vreau sa platesc " + amountConverted + " dar nu am destui bani in cont: " + balance);
+            TransactionOutput transaction = new TransactionOutput(timestamp, "Insufficient funds");
+
+            // adaug tranzactia in lista de tranzactii a contului
+            this.addTransaction(transaction);
+            System.out.println("Insufficient funds");
+
             return false;
         }
 
@@ -173,5 +185,87 @@ public class Account {
 //        System.out.println("dupa transfer: " + this.balance + "  " + receiver.balance);
 
         return true;
+    }
+
+    public void changeInterestRate(double newInterestRate) {
+        this.interestRate = newInterestRate;
+    }
+
+    public boolean checkBalance(double amount, String currency, Admin admin) {
+        // verific daca e aceeasi moneda
+        if (this.currency.equals(currency)) {
+            System.out.println(this.iban + " are " + this.balance + this.currency + " si vrea sa plateasca " + amount + currency);
+            if (this.balance < amount) {
+                // inseamna ca nu am destui bani
+                System.out.println(this.iban + " nu are destui bani");
+                return false;
+            }
+
+            // inseamna ca am destui bani
+            return true;
+        }
+
+        // inseamna ca trb sa fac transferul
+        double finalRate = admin.getExchangeRateFromTo(currency, this.currency);
+        System.out.println("final rate: " + finalRate);
+
+        if (finalRate == 0) {
+            return false;
+        }
+
+        double amountConverted = amount * finalRate;
+        System.out.println("amount converted: " + amountConverted);
+
+        if (this.balance < amountConverted) { // ar trb sa verific si minBalance?
+            System.out.println(this.iban + " nu are destui bani dupa conversie");
+            return false;
+        }
+
+        return true;
+    }
+
+    public void splitPaymentDone(double splitAmount, String currency, Admin admin, int timestamp, double amount, List<String> accounts) {
+        System.out.println("VERIFI PENTRU " + this.iban + " ca sa vad daca de aici e prb");
+        String message;
+        // verific daca e aceeasi moneda
+        if (this.currency.equals(currency)) {
+            System.out.println("split payment: " + this.iban + " are " + this.balance + " plateste " + splitAmount);
+            balance -= splitAmount;
+
+            System.out.println("dupa ce a platit: " + this.balance);
+
+            // creez mesajul
+            message = String.format("Split payment of %.2f %s", amount, currency);
+
+            System.out.println("afisez amount inainte sa trimit la splitpaymentoutput: " + splitAmount);
+            // creez tranzactia
+            SplitPaymentOutput transaction = new SplitPaymentOutput(timestamp, message, currency, splitAmount, accounts);
+
+            // adaug tranzactia in lista de tranzactii a contului
+            this.addTransaction(transaction);
+
+            return;
+        }
+
+        // inseamna ca trb sa fac transferul
+        System.out.println("split payment: " + this.iban + " are " + this.balance + " plateste " + splitAmount);
+
+        double finalRate = admin.getExchangeRateFromTo(currency, this.currency);
+
+        double amountConverted = splitAmount * finalRate;
+        System.out.println("amount converted: " + amountConverted);
+
+        balance -= amountConverted;
+
+        System.out.println("dupa ce a platit: " + this.balance);
+
+        // creez mesajul
+        message = String.format("Split payment of %.2f %s", amount, currency);
+
+        // creez tranzactia
+        SplitPaymentOutput transaction = new SplitPaymentOutput(timestamp, message, currency, splitAmount, accounts);
+
+        // adaug tranzactia in lista de tranzactii a contului
+        this.addTransaction(transaction);
     }
 }
