@@ -1,9 +1,14 @@
 package org.poo.transactions;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.poo.Account;
 import org.poo.Card;
 import org.poo.Transaction;
 import org.poo.User;
+import org.poo.fileio.output.DeleteAccountOutput;
+import org.poo.fileio.output.PayOnlineOuput;
 import org.poo.utils.Admin;
 
 import javax.xml.crypto.dsig.TransformService;
@@ -72,8 +77,10 @@ public class PayOnline extends BaseCommand {
     private String commerciant;
     Admin admin;
     private User user;
+    ArrayNode output;
+    private ObjectMapper objectMapper = new ObjectMapper();
 
-    public PayOnline(User user, String command, int timestamp, String cardNumber, double amount, String currency, String description, String commerciant, Admin admin) {
+    public PayOnline(User user, String command, int timestamp, String cardNumber, double amount, String currency, String description, String commerciant, Admin admin, ArrayNode output) {
         super(command, timestamp);
         this.user = user;
         this.cardNumber = cardNumber;
@@ -82,6 +89,7 @@ public class PayOnline extends BaseCommand {
         this.description = description;
         this.commerciant = commerciant;
         this.admin = admin;
+        this.output = output;
     }
 
     public void execute() {
@@ -90,17 +98,34 @@ public class PayOnline extends BaseCommand {
         Account account = admin.getAccountByCardNumber(cardNumber, user);
 
         if (card == null) { // vad cum adaug in tranzactii!!!!!!!!!!!!
-            System.out.println("Cardul nu exista!");
+            PayOnlineOuput fail = new PayOnlineOuput(getTimestamp());
+            output.add(createOutput(fail));
             return;
         }
 
         // efectuez plata
         boolean paid = card.payOnline(amount, currency, description, commerciant, account, admin);
 
+        if (!paid) { // nu stiu daca ar trb sa se intample ceva
+//            PayOnlineOuput fail = new PayOnlineOuput(getTimestamp());
+//            output.add(createOutput(fail));
+        }
+
         // creez tranzactia
         Transaction transaction = new Transaction("Online payment", getTimestamp());
 
         // adaug tranzactia in lista de tranzactii a contului
         account.addTransaction(transaction);
+    }
+
+    public ObjectNode createOutput(PayOnlineOuput fail) {
+        ObjectNode objectNode = objectMapper.createObjectNode();
+        objectNode.put("command", this.getCommand());
+        objectNode.put("output", objectMapper.valueToTree(fail));
+        objectNode.put("timestamp", this.getTimestamp());
+
+        System.out.println("Nu am card pentru plata de pe cardul: " + cardNumber);
+
+        return objectNode;
     }
 }

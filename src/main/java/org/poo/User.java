@@ -32,6 +32,7 @@ public class User {
     private String firstName;
     private String lastName;
     private  String email;
+
     private ArrayList<Account> accounts = new ArrayList<>();
 
     public ArrayList<Account> getAccounts() {
@@ -58,5 +59,13 @@ public class User {
             }
         }
         return false;
+    }
+
+    public void setAlias(String iban, String alias) {
+        for (Account account : accounts) {
+            if (account.getIban().equals(iban)) {
+                account.setAlias(alias);
+            }
+        }
     }
 }

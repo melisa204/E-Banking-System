@@ -192,12 +192,42 @@ public final class Admin {
         return null;
     }
 
-    public ExchangeRate getExchangeRateFromTo(String from, String to) {
+    public double getExchangeRateFromTo(String from, String to) {
+        // cuat rata directa
         for (ExchangeRate exchangeRate : exchangeRates) {
             if (exchangeRate.getFrom().equals(from) && exchangeRate.getTo().equals(to)) {
-                return exchangeRate;
+                return exchangeRate.getRate();
             }
         }
-        return null;
+
+        // caut rata inversa
+        for (ExchangeRate exchangeRate : exchangeRates) {
+            if (exchangeRate.getFrom().equals(to) && exchangeRate.getTo().equals(from)) {
+                return 1 / exchangeRate.getRate();
+            }
+        }
+
+        // caut succesiv, daca sunt din una in alta
+        for (ExchangeRate exchangeRate : exchangeRates) {
+            if (exchangeRate.getFrom().equals(from)) {
+                double intermediateRate = getExchangeRateFromTo(exchangeRate.getTo(), to);
+                if (intermediateRate != 0) {
+                    System.out.println("*******IN ADMIN Am găsit rata de schimb de la " + from + " la " + to + " prin " + exchangeRate.getTo());
+                    return exchangeRate.getRate() * intermediateRate;
+                }
+            }
+        }
+
+        // daca nu gasesc rata
+        return 0;
+    }
+
+    public boolean isDirectRate(String from, String to) {
+        for (ExchangeRate exchangeRate : exchangeRates) {
+            if (exchangeRate.getFrom().equals(from) && exchangeRate.getTo().equals(to)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
