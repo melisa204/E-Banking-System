@@ -1,6 +1,7 @@
 package org.poo.utils;
 
 import org.poo.Account;
+import org.poo.Card;
 import org.poo.ExchangeRate;
 import org.poo.User;
 import org.poo.transactions.Command;
@@ -29,6 +30,7 @@ public final class Admin {
     public ArrayList<ExchangeRate> getExchangeRates() {
         return exchangeRates;
     }
+
 
     public void setExchangeRates(ArrayList<ExchangeRate> exchangeRates) {
         this.exchangeRates = exchangeRates;
@@ -141,5 +143,61 @@ public final class Admin {
 
     public static void resetInstance() {
         instance = null;
+    }
+
+    public Card getCardByNumber(String cardNumber, User user) {
+            for (Account account : user.getAccounts()) {
+                for (Card card : account.getCards()) {
+                    if (card.getCardNumber().equals(cardNumber)) {
+                        return card;
+                    }
+                }
+            }
+        return null;
+    }
+
+    public boolean deleteCard(String cardNumber, User user) {
+        for (Account account : user.getAccounts()) {
+            for (Card card : account.getCards()) {
+                if (card.getCardNumber().equals(cardNumber)) {
+                    account.getCards().remove(card);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public Account getAccountByCardNumber(String cardNumber, User user) {
+        for (Account account : user.getAccounts()) {
+            for (Card card : account.getCards()) {
+                if (card.getCardNumber().equals(cardNumber)) {
+                    return account;
+                }
+            }
+        }
+        return null;
+    }
+
+    public Card getCardOnlyByNumber(String cardNumber) {
+        for (User user : users) {
+            for (Account account : user.getAccounts()) {
+                for (Card card : account.getCards()) {
+                    if (card.getCardNumber().equals(cardNumber)) {
+                        return card;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    public ExchangeRate getExchangeRateFromTo(String from, String to) {
+        for (ExchangeRate exchangeRate : exchangeRates) {
+            if (exchangeRate.getFrom().equals(from) && exchangeRate.getTo().equals(to)) {
+                return exchangeRate;
+            }
+        }
+        return null;
     }
 }

@@ -39,7 +39,17 @@ public class Account {
     private double balance;
     private String currency;
     private String accountType;
-    double interestRate;
+    private double interestRate;
+
+    public double getMinBalance() {
+        return minBalance;
+    }
+
+    public void setMinBalance(double minBalance) {
+        this.minBalance = minBalance;
+    }
+
+    private double minBalance;
 
     public String getAccountType() {
         return accountType;
@@ -86,5 +96,9 @@ public class Account {
 
     public void addCard(Card card) {
         this.cards.add(card);
+    }
+
+    public void setMinimumBalance(double minBalance) {
+        this.minBalance = minBalance;
     }
 }
