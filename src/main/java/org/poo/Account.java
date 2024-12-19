@@ -1,5 +1,6 @@
 package org.poo;
 
+import org.poo.fileio.output.TransactionOutput;
 import org.poo.utils.Admin;
 
 import java.util.ArrayList;
@@ -29,11 +30,11 @@ public class Account {
         this.currency = currency;
     }
 
-    public ArrayList<Transaction> getTransactions() {
+    public ArrayList<TransactionOutput> getTransactions() {
         return transactions;
     }
 
-    public void setTransactions(ArrayList<Transaction> transactions) {
+    public void setTransactions(ArrayList<TransactionOutput> transactions) {
         this.transactions = transactions;
     }
 
@@ -78,7 +79,7 @@ public class Account {
     public void setInterestRate(double interestRate) {
         this.interestRate = interestRate;
     }
-    private ArrayList<Transaction> transactions = new ArrayList<Transaction>(); // il declar aici
+    private ArrayList<TransactionOutput> transactions = new ArrayList<TransactionOutput>(); // il declar aici
 
     public ArrayList<Card> getCards() {
         return cards;
@@ -102,7 +103,7 @@ public class Account {
         this.iban = iban;
     }
 
-    public void addTransaction(Transaction transaction) {
+    public void addTransaction(TransactionOutput transaction) {
         this.transactions.add(transaction);
     }
 
@@ -117,7 +118,7 @@ public class Account {
     public boolean sendMoney(Account receiver, double amount, Admin admin) {
         // verific daca au aceeasi moneda
         if (this.getCurrency().equals(receiver.getCurrency())) {
-//            System.out.println("au aceeasi moneda deci doar transfer");
+            System.out.println("au aceeasi moneda deci doar transfer");
 
             if (this.getBalance() < amount) {
                 System.out.println("Insufficient funds");
@@ -131,21 +132,21 @@ public class Account {
             }
 
             // am verificat si totul e ok -> fac tfransferul
-//            System.out.println("transfer " + amount + " din contul care are " + this.getBalance() + " in contul care are " + receiver.getBalance());
+            System.out.println("transfer " + amount + " din contul care are " + this.getBalance() + " in contul care are " + receiver.getBalance());
             this.balance -= amount;
             receiver.balance += amount;
 
-//            System.out.println("dupa transfer: " + this.getBalance() + "  " + receiver.getBalance());
+            System.out.println("dupa transfer: " + this.getBalance() + "  " + receiver.getBalance());
 
             return true;
         }
 
         // au currency diferit, deci trebuie sa fac conversie
-//        System.out.println("au currency diferit, deci trebuie sa fac conversie");
+        System.out.println("au currency diferit, deci trebuie sa fac conversie");
 
         double finalRate = admin.getExchangeRateFromTo(currency, receiver.currency);
 
-//        System.out.println("final rate: " + finalRate);
+        System.out.println("final rate: " + finalRate);
 
         if (finalRate == 0) {
             System.out.println("nu am gasit exchange rate");

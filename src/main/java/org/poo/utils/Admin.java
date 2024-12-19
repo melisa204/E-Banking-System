@@ -230,4 +230,15 @@ public final class Admin {
         }
         return false;
     }
+
+    public Account getAccountByAlias(String alias) {
+        for (User user : users) {
+            for (Account account : user.getAccounts()) {
+                if (account.getAlias().equals(alias)) {
+                    return account;
+                }
+            }
+        }
+        return null;
+    }
 }

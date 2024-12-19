@@ -2,9 +2,7 @@ package org.poo.transactions.card;
 
 import org.poo.Account;
 import org.poo.Card;
-import org.poo.Transaction;
 import org.poo.User;
-import org.poo.fileio.input.CommandInput;
 import org.poo.transactions.BaseCommand;
 import org.poo.utils.Admin;
 import org.poo.utils.Utils;
@@ -27,8 +25,8 @@ public class CreateCard extends BaseCommand {
         // prima data verific daca contul apartine utilizatorului
         if (!user.hasAccount(currentAccount)) { // daca userul nu are contul asta
             // creez tranzactia specifica
-            Transaction transaction = new Transaction("Card creation failed??????????", getTimestamp());
-            currentAccount.addTransaction(transaction);
+//            Transaction transaction = new Transaction("Card creation failed??????????", getTimestamp());
+//            currentAccount.addTransaction(transaction);
             return; // e ok ca nu vreau sa continui mai departe
         }
 
@@ -41,10 +39,10 @@ public class CreateCard extends BaseCommand {
 
         // TODO grija ca s ar putea sa nu mearga tranzactia
 
-        // creez tranzactia specifica
-        Transaction transaction = new Transaction("Card created", getTimestamp());
-
-        // adaug tranzactia in lista de tranzactii a contului
-        currentAccount.addTransaction(transaction);
+//        // creez tranzactia specifica
+//        Transaction transaction = new Transaction("Card created", getTimestamp());
+//
+//        // adaug tranzactia in lista de tranzactii a contului
+//        currentAccount.addTransaction(transaction);
     }
 }

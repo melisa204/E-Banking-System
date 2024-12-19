@@ -1,9 +1,6 @@
 package org.poo.transactions.card;
 
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import org.poo.Account;
-import org.poo.Card;
-import org.poo.Transaction;
 import org.poo.User;
 import org.poo.transactions.BaseCommand;
 import org.poo.utils.Admin;
@@ -32,10 +29,10 @@ public class DeleteCard extends BaseCommand {
             return;
         }
 
-        // creez tranzactia specifica
-        Transaction transaction = new Transaction("Card deleted", getTimestamp());
-
-        // adaug tranzactia in lista de tranzactii a contului
-        currentAccount.addTransaction(transaction);
+//        // creez tranzactia specifica
+//        Transaction transaction = new Transaction("Card deleted", getTimestamp());
+//
+//        // adaug tranzactia in lista de tranzactii a contului
+//        currentAccount.addTransaction(transaction);
     }
 }
