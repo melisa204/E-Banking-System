@@ -1,17 +1,17 @@
 package org.poo.fileio.output;
 
 public class DeleteAccountOutput {
-    public int getTimestamp() {
+    public final int getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(int timestamp) {
+    public final void setTimestamp(final int timestamp) {
         this.timestamp = timestamp;
     }
 
     private int timestamp;
 
-    public DeleteAccountOutput(int timestamp) {
+    public DeleteAccountOutput(final int timestamp) {
         this.timestamp = timestamp;
     }
 }

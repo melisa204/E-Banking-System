@@ -1,31 +1,29 @@
 package org.poo.fileio.output;
 
-import org.poo.transactions.SplitPayment;
-
 import java.util.List;
 
 public class SplitPaymentOutput extends TransactionOutput {
-    public String getCurrency() {
+    public final String getCurrency() {
         return currency;
     }
 
-    public void setCurrency(String currency) {
+    public final void setCurrency(final String currency) {
         this.currency = currency;
     }
 
-    public double getAmount() {
+    public final double getAmount() {
         return amount;
     }
 
-    public void setAmount(double amount) {
+    public final void setAmount(final double amount) {
         this.amount = amount;
     }
 
-    public List<String> getInvolvedAccounts() {
+    public final List<String> getInvolvedAccounts() {
         return involvedAccounts;
     }
 
-    public void setInvolvedAccounts(List<String> involvedAccounts) {
+    public final void setInvolvedAccounts(final List<String> involvedAccounts) {
         this.involvedAccounts = involvedAccounts;
     }
 
@@ -33,12 +31,16 @@ public class SplitPaymentOutput extends TransactionOutput {
     private double amount;
     private List<String> involvedAccounts;
 
-    public SplitPaymentOutput(int timestamp, String description, String currency, double amount, List<String> involvedAccounts) {
+    public SplitPaymentOutput(final int timestamp, final String description,
+                              final String currency, final double amount,
+                              final List<String> involvedAccounts) {
         super(timestamp, description);
         this.currency = currency;
-        System.out.println("afisez din splitoutpu amount ul care e ala plit ca sa vad daca e ok " + amount);
+        System.out.println("afisez din splitoutpu amount ul care e ala plit ca sa vad daca e ok "
+                + amount);
         this.amount = amount;
-        System.out.println("afisez din splitoutpu amount ul care e ala plit ca sa vad daca e ok cu this " + this.amount);
+        System.out.println("afisez din splitoutpu amount ul care e ala plit ca sa vad "
+                + "daca e ok cu this " + this.amount);
         this.involvedAccounts = involvedAccounts;
     }
 }

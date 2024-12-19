@@ -3,27 +3,27 @@ package org.poo.fileio.output;
 import org.poo.Card;
 
 public class CardOutput {
-    public String getCardNumber() {
+    public final String getCardNumber() {
         return cardNumber;
     }
 
-    public void setCardNumber(String cardNumber) {
+    public final void setCardNumber(final String cardNumber) {
         this.cardNumber = cardNumber;
     }
 
-    public String getStatus() {
+    public final String getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public final void setStatus(final String status) {
         this.status = status;
     }
 
-    String cardNumber;
-    String status;
+    private String cardNumber;
+    private String status;
 
-    public CardOutput(Card card) {
-        this.cardNumber = card.getCardNumber();
-        this.status = card.getStatus();
+    public CardOutput(final Card card) {
+        this.setCardNumber(card.getCardNumber());
+        this.setStatus(card.getStatus());
     }
 }

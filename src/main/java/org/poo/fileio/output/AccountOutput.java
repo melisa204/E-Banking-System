@@ -7,57 +7,57 @@ import org.poo.Card;
 import java.util.ArrayList;
 
 public class AccountOutput {
-    public void setIBAN(String IBAN) {
+    public final void setIBAN(final String IBAN) {
         this.IBAN = IBAN;
     }
 
-    public double getBalance() {
+    public final double getBalance() {
         return balance;
     }
 
-    public void setBalance(double balance) {
+    public final void setBalance(final double balance) {
         this.balance = balance;
     }
 
-    public String getCurrency() {
+    public final String getCurrency() {
         return currency;
     }
 
-    public void setCurrency(String currency) {
+    public final void setCurrency(final String currency) {
         this.currency = currency;
     }
 
-    public String getType() {
+    public final String getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public final void setType(final String type) {
         this.type = type;
     }
 
-    public ArrayList<CardOutput> getCards() {
+    public final ArrayList<CardOutput> getCards() {
         return cards;
     }
 
-    public void setCards(ArrayList<CardOutput> cards) {
+    public final void setCards(final ArrayList<CardOutput> cards) {
         this.cards = cards;
     }
     @JsonProperty("IBAN")
     String IBAN;
-    double balance;
-    String currency;
-    String type;
-    ArrayList<CardOutput> cards = new ArrayList<>();
+    private double balance;
+    private String currency;
+    private String type;
+    private ArrayList<CardOutput> cards = new ArrayList<>();
 
-    public AccountOutput(Account account) {
+    public AccountOutput(final Account account) {
         this.IBAN = account.getIban();
-        this.balance = account.getBalance();
-        this.currency = account.getCurrency();
-        this.type = account.getAccountType();
+        this.setBalance(account.getBalance());
+        this.setCurrency(account.getCurrency());
+        this.setType(account.getAccountType());
         if (account.getCards() != null) {
             for (Card card : account.getCards()) {
                 CardOutput cardOutput = new CardOutput(card);
-                cards.add(cardOutput);
+                getCards().add(cardOutput);
             }
         }
     }

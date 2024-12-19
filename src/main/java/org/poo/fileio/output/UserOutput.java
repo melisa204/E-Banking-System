@@ -6,49 +6,49 @@ import org.poo.User;
 import java.util.ArrayList;
 
 public class UserOutput {
-    public String getFirstName() {
+    public final String getFirstName() {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
+    public final void setFirstName(final String firstName) {
         this.firstName = firstName;
     }
 
-    public String getLastName() {
+    public final String getLastName() {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
+    public final void setLastName(final String lastName) {
         this.lastName = lastName;
     }
 
-    public String getEmail() {
+    public final String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
+    public final void setEmail(final String email) {
         this.email = email;
     }
 
-    public ArrayList<AccountOutput> getAccounts() {
+    public final ArrayList<AccountOutput> getAccounts() {
         return accounts;
     }
 
-    public void setAccounts(ArrayList<AccountOutput> accounts) {
+    public final void setAccounts(final ArrayList<AccountOutput> accounts) {
         this.accounts = accounts;
     }
 
-    String firstName;
-    String lastName;
-    String email;
-    ArrayList<AccountOutput> accounts = new ArrayList<AccountOutput>();
-    public UserOutput(User user) {
-        this.firstName = user.getFirstName();
-        this.lastName = user.getLastName();
-        this.email = user.getEmail();
+    private String firstName;
+    private String lastName;
+    private String email;
+    private ArrayList<AccountOutput> accounts = new ArrayList<AccountOutput>();
+    public UserOutput(final User user) {
+        this.setFirstName(user.getFirstName());
+        this.setLastName(user.getLastName());
+        this.setEmail(user.getEmail());
         for (Account account : user.getAccounts()) {
             AccountOutput accountOutput = new AccountOutput(account);
-            accounts.add(accountOutput);
+            getAccounts().add(accountOutput);
         }
     }
 }

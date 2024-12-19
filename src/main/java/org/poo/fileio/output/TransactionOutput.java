@@ -1,27 +1,27 @@
 package org.poo.fileio.output;
 
 public class TransactionOutput {
-    public int getTimestamp() {
+    public final int getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(int timestamp) {
+    public final void setTimestamp(final int timestamp) {
         this.timestamp = timestamp;
     }
 
     private int timestamp;
 
-    public String getDescription() {
+    public final String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
+    public final void setDescription(final String description) {
         this.description = description;
     }
 
     private String description;
 
-    public TransactionOutput(int timestamp, String description) {
+    public TransactionOutput(final int timestamp, final String description) {
         this.timestamp = timestamp;
         this.description = description;
     }

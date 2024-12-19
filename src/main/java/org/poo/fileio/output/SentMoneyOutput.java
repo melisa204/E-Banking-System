@@ -1,19 +1,19 @@
 package org.poo.fileio.output;
 
 public class SentMoneyOutput extends TransactionOutput {
-    public String getAmount() {
+    public final String getAmount() {
         return amount;
     }
 
-    public void setAmount(String amount) {
+    public final void setAmount(final String amount) {
         this.amount = amount;
     }
 
-    public String getTransferType() {
+    public final String getTransferType() {
         return transferType;
     }
 
-    public void setTransferType(String transferType) {
+    public final void setTransferType(final String transferType) {
         this.transferType = transferType;
     }
 
@@ -21,25 +21,27 @@ public class SentMoneyOutput extends TransactionOutput {
     private String transferType;
     private String senderIBAN;
 
-    public String getSenderIBAN() {
+    public final String getSenderIBAN() {
         return senderIBAN;
     }
 
-    public void setSenderIBAN(String senderIBAN) {
+    public final void setSenderIBAN(final String senderIBAN) {
         this.senderIBAN = senderIBAN;
     }
 
-    public String getReceiverIBAN() {
+    public final String getReceiverIBAN() {
         return receiverIBAN;
     }
 
-    public void setReceiverIBAN(String receiverIBAN) {
+    public final void setReceiverIBAN(final String receiverIBAN) {
         this.receiverIBAN = receiverIBAN;
     }
 
     private String receiverIBAN;
 
-    public SentMoneyOutput(int timestamp, String description, String amount, String transferType, String senderIBAN, String receiverIBAN) {
+    public SentMoneyOutput(final int timestamp, final String description, final String amount,
+                           final String transferType,
+                           final String senderIBAN, final String receiverIBAN) {
         super(timestamp, description);
         this.amount = amount;
         this.transferType = transferType;

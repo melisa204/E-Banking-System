@@ -1,26 +1,26 @@
 package org.poo.fileio.output;
 
 public class PayOnlineForOuput {
-    public int getTimestamp() {
+    public final int getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(int timestamp) {
+    public final void setTimestamp(final int timestamp) {
         this.timestamp = timestamp;
     }
 
-    public String getDescription() {
+    public final String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
+    public final void setDescription(final String description) {
         this.description = description;
     }
 
-    int timestamp;
-    String description = "Card not found";
+    private int timestamp;
+    private String description = "Card not found";
 
-    public PayOnlineForOuput(int timestamp) {
-        this.timestamp = timestamp;
+    public PayOnlineForOuput(final int timestamp) {
+        this.setTimestamp(timestamp);
     }
 }

@@ -1,27 +1,28 @@
 package org.poo.fileio.output;
 
 public class PayOnlineOutput extends TransactionOutput {
-    public double getAmount() {
+    public final double getAmount() {
         return amount;
     }
 
-    public void setAmount(double amount) {
+    public final void setAmount(final double amount) {
         this.amount = amount;
     }
 
-    public String getCommerciant() {
+    public final String getCommerciant() {
         return commerciant;
     }
 
-    public void setCommerciant(String commerciant) {
+    public final void setCommerciant(final String commerciant) {
         this.commerciant = commerciant;
     }
 
-    double amount;
-    String commerciant;
-    public PayOnlineOutput(int timestamp, String description, double amount, String commerciant) {
+    private double amount;
+    private String commerciant;
+    public PayOnlineOutput(final int timestamp, final String description,
+                           final double amount, final String commerciant) {
         super(timestamp, description);
-        this.amount = amount;
-        this.commerciant = commerciant;
+        this.setAmount(amount);
+        this.setCommerciant(commerciant);
     }
 }

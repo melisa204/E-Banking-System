@@ -5,31 +5,31 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.ArrayList;
 
 public class ReportOutput {
-    public void setIBAN(String IBAN) {
+    public final void setIBAN(final String IBAN) {
         this.IBAN = IBAN;
     }
 
-    public double getBalance() {
+    public final double getBalance() {
         return balance;
     }
 
-    public void setBalance(double balance) {
+    public final void setBalance(final double balance) {
         this.balance = balance;
     }
 
-    public String getCurrency() {
+    public final String getCurrency() {
         return currency;
     }
 
-    public void setCurrency(String currency) {
+    public final void setCurrency(final String currency) {
         this.currency = currency;
     }
 
-    public ArrayList<TransactionOutput> getTransactions() {
+    public final ArrayList<TransactionOutput> getTransactions() {
         return transactions;
     }
 
-    public void setTransactions(ArrayList<TransactionOutput> transactions) {
+    public final void setTransactions(final ArrayList<TransactionOutput> transactions) {
         this.transactions = transactions;
     }
     @JsonProperty("IBAN")
@@ -38,7 +38,8 @@ public class ReportOutput {
     private String currency;
     private ArrayList<TransactionOutput> transactions;
 
-    public ReportOutput(String IBAN, double balance, String currency, ArrayList<TransactionOutput> transactions) {
+    public ReportOutput(final String IBAN, final double balance, final String currency,
+                        final ArrayList<TransactionOutput> transactions) {
         this.IBAN = IBAN;
         this.balance = balance;
         this.currency = currency;

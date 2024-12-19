@@ -1,16 +1,16 @@
 package org.poo.fileio.output;
 
 public class DeleteAccountFailOutput extends DeleteAccountOutput {
-    public String getError() {
+    public final String getError() {
         return error;
     }
 
-    public void setError(String error) {
+    public final void setError(final String error) {
         this.error = error;
     }
 
     private String error = "Account couldn't be deleted - see org.poo.transactions for details";
-    public DeleteAccountFailOutput(int timestamp) {
+    public DeleteAccountFailOutput(final int timestamp) {
         super(timestamp);
     }
 }
